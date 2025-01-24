@@ -1,0 +1,131 @@
+<UserControl x:Class="Labb3_Database.Views.ConfigurationView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
+             xmlns:converters="clr-namespace:Labb3_Database.Converters"
+             DataContext="{Binding ConfigurationViewModel}"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <converters:NullToVisibilityConverter x:Key="NullToVisibilityConverter" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Margin="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Label
+                Content="{Binding ActivePack.Name}"
+                FontWeight="Bold"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Center" />
+            <StackPanel
+                Grid.Column="1"
+                Orientation="Horizontal">
+                <Button
+                    Command="{Binding DataContext.CommandsViewModel.ShowPackOptionsCommand, RelativeSource={RelativeSource AncestorType={x:Type Window}}}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="0 0 5 0">
+                    <fa:IconBlock Icon="Gear" />
+                </Button>
+                <Button
+                    Command="{Binding AddQuestionCommand}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center">
+                    <fa:IconBlock Icon="Plus" />
+                </Button>
+                <Button
+                    Command="{Binding RemoveQuestionCommand}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="5 0 0 0">
+                    <fa:IconBlock Icon="Minus" />
+                </Button>
+            </StackPanel>
+
+            <ListBox
+                SelectedItem="{Binding ActiveQuestion}"
+                Grid.Row="1"
+                Grid.ColumnSpan="2"
+                x:Name="listBoxQuestions"
+                ItemsSource="{Binding ActivePack.Questions}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                VerticalAlignment="Stretch"
+                HorizontalAlignment="Stretch">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel>
+                            <TextBlock FontWeight="Bold">Question: </TextBlock>
+                            <TextBlock TextWrapping="Wrap" Text="{Binding Query}" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+
+        <Grid Grid.Column="1"
+              Visibility="{Binding ElementName=listBoxQuestions, Path=SelectedItem, Converter={StaticResource NullToVisibilityConverter}}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+
+            <StackPanel>
+                <Label
+                    Content="Question:"
+                    FontWeight="Bold"
+                    Margin="0 20 0 0" />
+                <TextBox
+                    Text="{Binding ActiveQuestion.Query, UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Stretch"
+                    TextWrapping="Wrap"
+                    MaxLength="196"
+                    Margin="10"
+                    Height="70" />
+            </StackPanel>
+
+            <StackPanel Grid.Row="1" Grid.Column="1" Margin="10 20 10 0">
+                <Label
+                    Content="Correct Answer:"
+                    FontWeight="Bold" />
+                <TextBox
+                    Text="{Binding ActiveQuestion.CorrectAnswer, UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Stretch" />
+                <Label
+                    Content="First Incorrect Answer:"
+                    FontWeight="Bold" />
+                <TextBox
+                    Text="{Binding ActiveQuestion.InCorrectAnswers[0], UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Stretch" />
+                <Label
+                    Content="Second Incorrect Answer:"
+                    FontWeight="Bold" />
+                <TextBox
+                    Text="{Binding ActiveQuestion.InCorrectAnswers[1], UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Stretch" />
+                <Label
+                    Content="Third Incorrect Answer:"
+                    FontWeight="Bold" />
+                <TextBox
+                    Text="{Binding ActiveQuestion.InCorrectAnswers[2], UpdateSourceTrigger=PropertyChanged}"
+                    VerticalAlignment="Stretch" />
+            </StackPanel>
+        </Grid>
+
+    </Grid>
+</UserControl>

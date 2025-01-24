@@ -1,0 +1,44 @@
+<Window x:Class="Labb3_Database.Views.Dialogs.PackOptionsDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:configView="clr-namespace:Labb3_Database.Model"
+        mc:Ignorable="d"
+        Title="Pack Options" Height="250" Width="200"
+        ResizeMode="NoResize">
+    <Grid>
+        <Grid.Resources>
+            <ObjectDataProvider x:Key="EnumDifficulties"
+                                ObjectType="{x:Type sys:Enum}"
+                                MethodName="GetValues">
+                <ObjectDataProvider.MethodParameters>
+                    <x:Type TypeName="configView:Difficulty" />
+                </ObjectDataProvider.MethodParameters>
+            </ObjectDataProvider>
+        </Grid.Resources>
+
+        <StackPanel Margin="5 5 5 5">
+            <Label Content="Pack Name:" FontWeight="Bold" />
+            <TextBox Text="{Binding ActivePack.Name, UpdateSourceTrigger=PropertyChanged}" />
+            <Label Content="Difficulty" FontWeight="Bold" />
+            <ComboBox
+                ItemsSource="{Binding Source={StaticResource EnumDifficulties}}"
+                SelectedValue="{Binding ActivePack.Difficulty}">
+            </ComboBox>
+            <Label Content="Category" FontWeight="Bold" />
+            <ComboBox
+                ItemsSource="{Binding QuizCategories}"
+                DisplayMemberPath="Name"
+                SelectedValue="{Binding ActivePack.Category}"
+                SelectedValuePath="Name">
+            </ComboBox>
+            <StackPanel Orientation="Horizontal">
+                <Label Content="Time Limit:" FontWeight="Bold" />
+                <Label Content="{Binding ActivePack.TimeLimitInSeconds}" />
+            </StackPanel>
+            <Slider Minimum="5" Maximum="120" Value="{Binding ActivePack.TimeLimitInSeconds}" />
+        </StackPanel>
+    </Grid>
+</Window>
