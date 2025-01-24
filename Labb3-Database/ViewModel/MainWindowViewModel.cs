@@ -53,6 +53,11 @@ public class MainWindowViewModel : ViewModelBase
 
         if (packsFromDb.Count <= 0)
         {
+            if (!db.Categories.Any())
+            {
+                db.Categories.Add(new Category("All"));
+                db.SaveChanges();
+            }
             var newPack = new QuestionPack("<Pack Name>", db.Categories.First().Name);
             
             packsFromDb.Add(new QuestionPackViewModel(newPack));

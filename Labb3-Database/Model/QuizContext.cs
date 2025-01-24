@@ -10,6 +10,8 @@ public class QuizContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        optionsBuilder.UseMongoDB("mongodb+srv://skrot600:iths2024@cluster0.gkp3g.mongodb.net/", "Quiz");
+        optionsBuilder.UseMongoDB("mongodb://localhost:27017/", "CalleBjureblad");
+        Database.AutoTransactionBehavior = AutoTransactionBehavior.Never;
     }
+
 }
